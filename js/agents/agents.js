@@ -238,6 +238,21 @@
     prioritize(fups) {
       return fups.slice().sort((a, b) => b.Priority - a.Priority);
     },
+    // Score a field-outreach contact by likely responsiveness (college/hostel/room).
+    score(sig) {
+      let pts = 0;
+      if (sig.Replied) pts += 50;
+      if (sig.Opened) pts += 15;
+      pts += Math.max(0, 35 - sig.Response_Latency_Hrs); // faster reply = higher
+      const score = Math.max(0, Math.min(100, Math.round(pts)));
+      return { score, tier: score >= 70 ? "high" : score >= 40 ? "medium" : "low" };
+    },
+    ranked() {
+      return store.state.fieldSignals
+        .filter((sig) => { const s = store.seeker(sig.Contact_ID); return s && store.inScope(s); })
+        .map((sig) => ({ sig, ...this.score(sig) }))
+        .sort((a, b) => b.score - a.score);
+    },
   };
 
   /* ---- 10. Dormant Contact Re-Activation Agent ---- */

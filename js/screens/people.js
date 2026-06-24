@@ -17,7 +17,7 @@
         <div class="page__head">
           <div><div class="page__title">Seekers</div><div class="page__sub">Every contact resolves to a root <span class="mono">Contact_ID</span> on the Identity/CRM spine (WF-006). Click any seeker to open Seeker 360.</div></div>
           <div class="spacer"></div>
-          <div class="page__actions"><span class="seam-chip">ID/CRM</span><span class="seam-chip">AUTH</span></div>
+          <div class="page__actions"><span class="seam-chip">ID/CRM</span><span class="seam-chip">AUTH</span><button class="btn btn--primary btn--sm" id="intake">+ New contact intake</button></div>
         </div>
         <div class="card"><div class="card__body card__body--flush"><div class="scroll-x">
           <table class="table">
@@ -38,8 +38,55 @@
     },
     mount() {
       document.querySelectorAll("tr.clickable").forEach((tr) => tr.onclick = () => router.navigate("/seeker/" + tr.dataset.id));
+      const ib = document.getElementById("intake"); if (ib) ib.onclick = contactIntake;
     },
   };
+
+  /* Deterministic contact intake: resolve identity → source-tag → FOLK seeker → welcome task */
+  function contactIntake() {
+    const nodes = FOLK.seed.nodes;
+    const guides = FOLK.seed.guides;
+    const m = c.overlay(`
+      <div class="modal__head"><h3>New contact intake</h3></div>
+      <div class="modal__body stack">
+        ${c.govBanner("Deterministic automation — resolves identity on the CRM spine, source-tags, creates a FOLK_Seeker at new_contact and a welcome follow-up task. No AI judgement.")}
+        <div class="field"><label>Full name</label><input class="ctrl" id="i-name" placeholder="e.g. Aarav Joshi"/></div>
+        <div class="grid grid--2">
+          <div class="field"><label>Node</label><select class="ctrl" id="i-node">${nodes.map((n) => `<option value="${n.Center_Node_ID}">${esc(n.Node_Name)}</option>`).join("")}</select></div>
+          <div class="field"><label>Primary guide</label><select class="ctrl" id="i-guide">${guides.filter((g) => g.Role.includes("guide") || g.Role === "center_head").map((g) => `<option value="${g.Guide_ID}">${esc(g.Guide_Name)}</option>`).join("")}</select></div>
+        </div>
+        <div class="grid grid--2">
+          <div class="field"><label>Primary source</label><select class="ctrl" id="i-source"><option value="paid_social">Paid social</option><option value="book_distribution">Book distribution</option><option value="college_outreach">College outreach</option><option value="festival">Festival</option><option value="referral">Referral</option><option value="webinar">Webinar</option><option value="pamphlet">Pamphlet</option></select></div>
+          <div class="field"><label>Source detail</label><input class="ctrl" id="i-detail" placeholder="e.g. campus stall"/></div>
+        </div>
+      </div>
+      <div class="modal__foot"><button class="btn" id="cancel">Cancel</button><button class="btn btn--primary" id="save">Resolve &amp; intake</button></div>`);
+    m.querySelector("#cancel").onclick = () => c.closeOverlay();
+    m.querySelector("#save").onclick = async () => {
+      const name = m.querySelector("#i-name").value.trim();
+      if (!name) { c.toast("Enter a name", "warn"); return; }
+      const save = m.querySelector("#save"); save.disabled = true; save.innerHTML = `<span class="spinner"></span> Resolving…`;
+      const res = await spine.identity.resolve(name); // resolve on the CRM spine (WF-006)
+      const cid = res.matched ? res.Contact_ID : res.Contact_ID;
+      const node = store.node(m.querySelector("#i-node").value);
+      const fsk = "FSK-" + util.rid("X").split("-")[1];
+      const seeker = {
+        Contact_ID: cid, FOLK_Seeker_ID: fsk, Full_Name: name, Phone: "+91 ••••• ••", Email: name.toLowerCase().split(" ")[0] + "••@example.com", City: node.City,
+        Center_ID: node.Center_ID, Center_Node_ID: node.Center_Node_ID, Primary_Guide_ID: m.querySelector("#i-guide").value, Secondary_Guide_IDs: [],
+        Current_Stage: "new_contact", Stage_Last_Updated: util.now().slice(0, 10), First_Contact_Date: util.now().slice(0, 10),
+        First_Attendance_Date: null, Last_Attendance_Date: null, Repeat_Attendance_Count: 0, Seva_Engagement_Status: "none", AI_Risk_Flag: "none",
+        Primary_Source: m.querySelector("#i-source").value, Source_Detail: m.querySelector("#i-detail").value, Created_Date: util.now().slice(0, 10),
+      };
+      store.state.seekers.unshift(seeker);
+      // deterministic: welcome follow-up task + mapping row + timeline
+      store.state.followups.unshift({ Followup_ID: util.rid("FUP"), Contact_ID: cid, Last_Followup_Date: null, Next_Followup_Date: util.now().slice(0, 10), Next_Action: "Welcome + invite to first program", Next_Action_Owner: seeker.Primary_Guide_ID, Followup_Channel: "whatsapp", Outcome: "pending", No_Response_Count: 0, Dormant_Status: "active", Recommended_Frequency: "weekly", Priority: 0.5 });
+      store.state.mapping.unshift({ Mapping_ID: util.rid("MAP"), Contact_ID: cid, Source_System: "FOLK_CRM", Source_Record_Key: "intake_" + cid, Match_Confidence: 1.0, Mapping_Status: "confirmed", Data_Quality_Score: 0.9 });
+      store.state.timeline.push({ Contact_ID: cid, entries: [{ when: util.now().slice(0, 10), type: "source", what: "Contact intake — source-tagged (" + util.titleCase(seeker.Primary_Source) + ")", by: "FOLK_CRM" }] });
+      store.audit("contact_intake (source-tagged) + welcome task", cid, { contactId: cid });
+      store.commit(); c.closeOverlay(); c.toast("Intake complete — " + name + " created at New Contact", "success");
+      router.navigate("/seeker/" + cid);
+    };
+  }
 
   /* ---------- Seeker 360 ---------- */
   S.seeker360 = {

@@ -32,37 +32,64 @@ Build tags (from the inventory): `D7` `D14` `D30` `2M` `FUT`.
 | Yatra / Trip Interest | AI-assisted | D14/D30 | Trip / Yatra Readiness | ✅ |
 | Data Quality | Agentic (high priority) | D7/D14 | Data-Quality Console | ✅ |
 | Management Intelligence | Dashboard-visible / Agentic | D14/D30 | Dashboards | ✅ |
-| Field Outreach Prioritization | AI-assisted / Agentic | 2M | Follow-up Queue (priority) | ✅ |
+| Field Outreach Prioritization | AI-assisted / Agentic | 2M | Field Outreach (responsiveness scoring) | ✅ |
 | Dormant Contact Re-Activation | AI-assisted | 2M | Dormant Reactivation | ✅ |
 
-## Screens
+> Every agent above is also surfaced in the **Agents & Automations Registry** with its purpose, automations,
+> inputs, outputs, human-approval points, escalation logic, success metric, classification layer and build tag —
+> and a **Run live** button that executes it against the mock data.
+
+## Screens (31 total)
 
 | # | Screen | Section | Build tag | Status |
 |---|---|---|---|---|
 | 1 | Role Dashboard (Home) | Home | D7 | ✅ |
-| 2 | Seeker 360 | People | D7 | ✅ |
-| 3 | Journey / Stage Board | People | D7 | ✅ |
-| 4 | Dormant Reactivation | People | 2M | ✅ |
-| 5 | Follow-up & Drop-off-Risk Queue | Engagement | D7 | ✅ |
-| 6 | Program / Course / Reading-Group Attendance | Engagement | D14 | ✅ |
-| 7 | Sadhana Progress | Engagement | D14 | ✅ |
-| 8 | Trip / Yatra Readiness | Engagement | D30 | ✅ |
-| 9 | Guide Workspace | Guide | D30 | ✅ |
-| 10 | One-on-One Prep | Guide | D30 | ✅ |
-| 11 | Content Presentation Copilot (KCKE) | Content | D7/FUT | ✅ |
-| 12 | Content Factory Request / Handoff (WF-04) | Content | 2M | ✅ |
-| 13 | Center-Node Admin | Admin | D14 | ✅ |
-| 14 | Data-Quality Console | Admin | D7 | ✅ |
-| 15 | Roles & Access | Admin | D14 | ✅ |
-| 16 | Billing / ERP References + API metering | Admin | D30 | ✅ |
-| 17 | Approvals (human gate) | Governance | D14 | ✅ |
-| 18 | Audit Trail | Governance | D30 | ✅ |
-| 19 | Leadership Dashboard | Dashboards | D14 | ✅ |
-| 20 | Center-Head Dashboard | Dashboards | D14 | ✅ |
-| 21 | Guide Dashboard | Dashboards | D30 | ✅ |
-| 22 | Data-Quality Dashboard | Dashboards | D7 | ✅ |
-| 23 | AI-Performance Dashboard | Dashboards | 2M | ✅ |
-| 24 | 2-Month Intelligence View | Dashboards | 2M | ✅ |
+| 2 | Seekers list + **Contact Intake** (deterministic) | People | D7 | ✅ |
+| 3 | Seeker 360 | People | D7 | ✅ |
+| 4 | Journey / Stage Board | People | D7 | ✅ |
+| 5 | Dormant Reactivation | People | 2M | ✅ |
+| 6 | Follow-up & Drop-off-Risk Queue | Engagement | D7 | ✅ |
+| 7 | Field Outreach Prioritization | Engagement | 2M | ✅ |
+| 8 | Program / Course / Reading-Group Attendance | Engagement | D14 | ✅ |
+| 9 | Sadhana Progress | Engagement | D14 | ✅ |
+| 10 | Trip / Yatra Readiness | Engagement | D30 | ✅ |
+| 11 | Guide Workspace | Guide | D30 | ✅ |
+| 12 | One-on-One Prep | Guide | D30 | ✅ |
+| 13 | Content Presentation Copilot (KCKE) | Content | D7/FUT | ✅ |
+| 14 | Content Factory Request / Handoff (WF-04) | Content | 2M | ✅ |
+| 15 | FOLK Asset Library (brief→asset→approve closed) | Content | 2M | ✅ |
+| 16 | Agents & Automations Registry (6 layers, runnable) | Intelligence | all | ✅ |
+| 17 | KPI Scorecard (all KPI families) | Intelligence | all | ✅ |
+| 18 | Center-Node Admin (+ WF-013 package) | Admin | D14 | ✅ |
+| 19 | Data-Quality Console | Admin | D7 | ✅ |
+| 20 | Integration / API Registry + Google Stack Mapping | Admin | 2M | ✅ |
+| 21 | Roles & Access | Admin | D14 | ✅ |
+| 22 | Billing / ERP References + API metering | Admin | D30 | ✅ |
+| 23 | Approvals (human gate) | Governance | D14 | ✅ |
+| 24 | Governance & Policy Center (AI can/cannot matrix) | Governance | all | ✅ |
+| 25 | Audit Trail | Governance | D30 | ✅ |
+| 26 | Leadership Dashboard (+ MI refresh) | Dashboards | D14 | ✅ |
+| 27 | Center-Head Dashboard | Dashboards | D14 | ✅ |
+| 28 | Guide Dashboard (in Guide Workspace) | Dashboards | D30 | ✅ |
+| 29 | Data-Quality Dashboard | Dashboards | D7 | ✅ |
+| 30 | AI-Performance Dashboard | Dashboards | 2M | ✅ |
+| 31 | 2-Month Intelligence View | Dashboards | 2M | ✅ |
+
+## Deterministic automations (Automated layer — no AI judgement)
+
+| Automation | Where | Status |
+|---|---|---|
+| Contact intake | Seekers → New contact intake | ✅ |
+| Source tagging | Contact intake + Seeker 360 | ✅ |
+| Attendance capture | Attendance → Capture | ✅ |
+| Duplicate / mapping detection | Data-Quality Console | ✅ |
+| Follow-up task creation | Field Outreach + Contact intake | ✅ |
+| Reminder creation | Follow-up Queue | ✅ |
+| Dashboard refresh | Leadership (MI agent) | ✅ |
+| Basic stage transitions | Journey Board → Approvals | ✅ |
+
+## Six classification layers (brief §2) — all represented in the Agents Registry
+Automated · AI-assisted · Agentic · Human-approved · Dashboard-visible · Platform-compatible ✅
 
 ## Cross-cutting
 

@@ -329,5 +329,20 @@
   /* unit prices for the mock metered billing (CENTRAL API billing) */
   seed.apiPrices = { KCKE: 0.40, Content: 6.0, Media: 9.0, Voice: 1.2 };
 
+  /* ---- FOLK Asset Library (approved assets returned from Content Factory/Media) ---- */
+  seed.assets = [
+    { Asset_ID: "ART-2207", Title: "College talk deck — Acting without attachment", Asset_Type: "deck", CF_Job_ID: "CF-1042", Grounding_Refs: ["KCKE-BG-0307"], Media_Asset_ID: "MED-7781", Approved_By: "GID-007", Approved_Date: "2026-06-16", Status: "approved" },
+  ];
+
+  /* ---- Field-outreach signals (college/hostel/room) for prioritization agent ---- */
+  // responsiveness signals; mapped to existing contacts by source type
+  seed.fieldSignals = [
+    { Contact_ID: "CNT-100247", Channel: "instagram_dm", Response_Latency_Hrs: 3, Opened: true, Replied: true, Outreach_Type: "paid_social" },
+    { Contact_ID: "CNT-100290", Channel: "hostel_visit", Response_Latency_Hrs: 30, Opened: true, Replied: false, Outreach_Type: "college_outreach" },
+    { Contact_ID: "CNT-100301", Channel: "campus_stall", Response_Latency_Hrs: 72, Opened: true, Replied: false, Outreach_Type: "college_outreach" },
+    { Contact_ID: "CNT-100320", Channel: "pamphlet_qr", Response_Latency_Hrs: 8, Opened: true, Replied: true, Outreach_Type: "pamphlet" },
+    { Contact_ID: "CNT-100350", Channel: "webinar_followup", Response_Latency_Hrs: 5, Opened: true, Replied: true, Outreach_Type: "webinar" },
+  ];
+
   FOLK.seed = seed;
 })(window.FOLK = window.FOLK || {});

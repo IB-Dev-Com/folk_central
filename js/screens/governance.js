@@ -75,6 +75,22 @@
     if (a.Item_Type === "stage_change" && a._stageTarget) {
       spine.identity.writeExtension(a.Contact_ID, { Current_Stage: a._stageTarget, Stage_Last_Updated: util.now().slice(0, 10) }, { action: "stage_change_applied", actor: store.session.userId });
     }
+    if (a.Item_Type === "public_content") {
+      // close the brief → asset → approve loop: publish to FOLK Asset Library
+      const refs = (a.Item_Ref || "").split(",").map((x) => x.trim()).filter(Boolean);
+      const cf = store.state.cfJobs.find((j) => (j.Grounding_Refs || []).some((r) => refs.includes(r))) || store.state.cfJobs.find((j) => j.CF_Job_ID === a.Item_Ref);
+      store.addAsset({
+        Asset_ID: util.rid("ART"),
+        Title: a.Payload ? a.Payload.split(".")[0] : "Approved content asset",
+        Asset_Type: cf && /reel/i.test(cf.Brief) ? "reel" : "deck",
+        CF_Job_ID: cf ? cf.CF_Job_ID : null,
+        Grounding_Refs: refs.length ? refs : (cf ? cf.Grounding_Refs : []),
+        Media_Asset_ID: cf ? cf.Media_Asset_ID : null,
+        Approved_By: store.session.userId,
+        Approved_Date: util.now().slice(0, 10),
+        Status: "approved",
+      });
+    }
     if (a.Item_Type === "stage_change" && !a._stageTarget && /→\s*([A-Za-z ]+)/.test(a.Payload)) {
       const m = a.Payload.match(/→\s*([A-Za-z ]+)/);
       const target = (m[1] || "").trim().toLowerCase().replace(/ /g, "_").replace(/\.$/, "");

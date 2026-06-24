@@ -19,6 +19,7 @@
     ]},
     { group: "Engagement", items: [
       { route: "/followups", icon: "✉", label: "Follow-up & Risk Queue" },
+      { route: "/field-outreach", icon: "◎", label: "Field Outreach" },
       { route: "/attendance", icon: "✓", label: "Attendance" },
       { route: "/sadhana", icon: "☸", label: "Sadhana Progress" },
       { route: "/yatra", icon: "⛰", label: "Trip / Yatra Readiness" },
@@ -29,15 +30,23 @@
     { group: "Content", items: [
       { route: "/content", icon: "✦", label: "Presentation Copilot" },
       { route: "/factory", icon: "⚒", label: "Content Factory Handoff" },
+      { route: "/assets", icon: "🖾", label: "FOLK Asset Library" },
+    ]},
+    { group: "Intelligence", items: [
+      { route: "/agents", icon: "✦", label: "Agents & Automations" },
+      { route: "/kpis", icon: "▤", label: "KPI Scorecard" },
+      { route: "/dash/intelligence", icon: "◔", label: "2-Month Intelligence" },
     ]},
     { group: "Admin", items: [
       { route: "/admin/centers", icon: "⌂", label: "Center-Node Admin" },
       { route: "/admin/data-quality", icon: "◈", label: "Data-Quality Console" },
+      { route: "/admin/integrations", icon: "⇄", label: "Integration Registry" },
       { route: "/admin/roles", icon: "⚿", label: "Roles & Access" },
       { route: "/admin/billing", icon: "₹", label: "Billing / ERP & API" },
     ]},
     { group: "Governance", items: [
       { route: "/approvals", icon: "⚖", label: "Approvals", badge: "approvals" },
+      { route: "/governance", icon: "🛡", label: "Governance & Policy" },
       { route: "/audit", icon: "❑", label: "Audit Trail" },
     ]},
   ];
@@ -170,6 +179,7 @@
       "/board": S.board,
       "/dormant": S.dormant,
       "/followups": S.followups,
+      "/field-outreach": S.fieldOutreach,
       "/attendance": S.attendance,
       "/sadhana": S.sadhana,
       "/yatra": S.yatra,
@@ -177,11 +187,16 @@
       "/guide/:id": S.oneOnOne,
       "/content": S.content,
       "/factory": S.factory,
+      "/assets": S.assets,
+      "/agents": S.agentsRegistry,
+      "/kpis": S.kpis,
       "/admin/centers": S.centers,
       "/admin/data-quality": S.dataQuality,
+      "/admin/integrations": S.integrations,
       "/admin/roles": S.roles,
       "/admin/billing": S.billing,
       "/approvals": S.approvals,
+      "/governance": S.governanceCenter,
       "/audit": S.audit,
       // dashboards
       "/dash/leadership": S.dashLeadership,

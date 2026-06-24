@@ -105,12 +105,12 @@
   };
 
   /* ---------- shared dashboard page wrapper ---------- */
-  function dashPage(title, sub, body) {
+  function dashPage(title, sub, body, extraActions) {
     return `<div class="page">
       <div class="page__head">
         <div><div class="page__title">${esc(title)}</div><div class="page__sub">${sub}</div></div>
         <div class="spacer"></div>
-        <div class="page__actions"><span class="seam-chip">BI</span><span class="seam-chip">AUTH</span><button class="btn btn--sm" onclick="location.hash='#/home'">← Home</button></div>
+        <div class="page__actions">${extraActions || ""}<span class="seam-chip">BI</span><span class="seam-chip">AUTH</span><button class="btn btn--sm" onclick="location.hash='#/home'">← Home</button></div>
       </div>${body}</div>`;
   }
 
@@ -152,7 +152,12 @@
             <div class="row between"><span>Sadhana gaps (lapsed)</span><b>${r.sadhanaGaps}</b></div>
             <div class="row between"><span>Mappings needing review</span><b>${r.needsReview}</b></div>
           </div></div>
-        </div>`);
+        </div>`,
+        `<button class="btn btn--ai btn--sm" id="mi-refresh">✦ Refresh rollup</button>`);
+    },
+    mount() {
+      const b = document.getElementById("mi-refresh");
+      if (b) b.onclick = () => { store.audit("dashboard_refresh (Management Intelligence)", "leadership", { actor: agents.mgmtIntelligence.name, actorType: "agent" }); store.commit(); c.toast("Management Intelligence Agent refreshed the rollup", "info"); };
     },
   };
 

@@ -3,6 +3,43 @@
 All notable changes to this prototype are recorded here.
 This is a **prototype for developer handoff** — mock interactions only, no real backend.
 
+## [0.2.0] — 2026-06-24 — Full-coverage pass (every feature, no priority filter)
+
+### Added — 7 new screens (24 → 31) for total requirement coverage
+
+- **Agents & Automations Registry** (`/agents`): all 10 agents with purpose, automations, inputs, outputs,
+  human-approval points, escalation logic, success metric, classification and build tag — each with a
+  **Run live** button that executes the real agent against the mock data. Includes the brief's six
+  classification layers (Automated · AI-assisted · Agentic · Human-approved · Dashboard-visible · Platform-compatible).
+- **Field Outreach Prioritization** (`/field-outreach`): responsiveness scoring for college/hostel/room
+  outreach signals; recommends early follow-up (creates a task — recommendation only).
+- **Integration / API Registry + Google Stack Mapping** (`/admin/integrations`): every shared-service seam
+  as a contract (direction, what crosses, fallback, NV flag) plus the Gemini/Vertex/BigQuery-Looker/AppSheet/Cloud-Run mapping.
+- **FOLK Asset Library** (`/assets`): approved Content Factory / Media AI assets land here; the
+  brief → asset → approval handoff is closed end-to-end (approving public content publishes an asset).
+- **KPI Scorecard** (`/kpis`): every KPI family from the inventory computed live from scoped mock data
+  (coverage/data-health, engagement, cultivation, risk & care, conversion, AI performance, governance).
+- **Governance & Policy Center** (`/governance`): the AI-can / AI-cannot-finalize matrix, sensitive-access
+  model, guardrails in force, and the audit guarantee in one place.
+
+### Added — deterministic automations (Automated layer)
+- **Contact intake**: resolves identity on the CRM spine, source-tags, creates a `FOLK_Seeker` at
+  `new_contact`, a confirmed mapping row, a timeline entry and a welcome follow-up task — all audited.
+- **Dashboard refresh**: Management Intelligence Agent refresh action on the Leadership dashboard.
+- Follow-up task creation now also reachable from Field Outreach.
+
+### Changed / fixed
+- Store now **backfills missing state keys** on load, so older persisted sessions migrate cleanly when
+  new entities (assets, field signals) are added.
+- Seed data extended: FOLK Asset Library seed, field-outreach responsiveness signals.
+- Navigation reorganized: new **Intelligence** rail group; Integration Registry, Asset Library and
+  Governance & Policy added to their sections.
+
+### Verified
+- All 31 routes render with **zero console errors**; all 10 agent Run-live outputs produce results;
+  content-approval → asset-library loop confirmed (assets 1 → 2 on approval); sensitive-note gating,
+  over-contact safeguard, approvals-apply and audit logging all confirmed via runtime checks.
+
 ## [0.1.0] — 2026-06-24
 
 ### Added — Initial autonomous build (all phases D7 → 2M screens)

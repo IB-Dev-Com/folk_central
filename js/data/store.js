@@ -33,15 +33,23 @@
       catalog: clone(s.catalog),
       routing: clone(s.routing),
       apiUsage: clone(s.apiUsage),
+      assets: clone(s.assets),
+      fieldSignals: clone(s.fieldSignals),
     };
   }
 
   function load() {
+    const fresh = freshState();
     try {
       const raw = sessionStorage.getItem(KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        // backfill any keys added since this session was first persisted
+        Object.keys(fresh).forEach((k) => { if (saved[k] === undefined) saved[k] = fresh[k]; });
+        return saved;
+      }
     } catch (e) { /* ignore */ }
-    return freshState();
+    return fresh;
   }
 
   function loadSession() {
@@ -144,6 +152,11 @@
       a.Timestamp = FOLK.util.now();
       this.audit("approval_" + status, id, { contactId: a.Contact_ID });
       this.commit();
+    },
+
+    addAsset(asset) {
+      this.state.assets.unshift(asset);
+      this.audit("asset_added_to_library", asset.Asset_ID, { actor: asset.Approved_By });
     },
 
     pendingApprovals() {
