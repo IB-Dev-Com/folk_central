@@ -1,0 +1,101 @@
+/* ============================================================================
+   WF-015 FOLK — Shared Design System tokens
+   Reused across every module on the platform shell (Design System spine).
+   ========================================================================== */
+
+:root {
+  /* Brand / accent — saffron-amber (devotional, warm) over a calm neutral base,
+     with a deep indigo for the platform spine. */
+  --c-saffron-50:  #fff7ed;
+  --c-saffron-100: #ffedd5;
+  --c-saffron-200: #fed7aa;
+  --c-saffron-300: #fdba74;
+  --c-saffron-400: #fb923c;
+  --c-saffron-500: #f97316;
+  --c-saffron-600: #ea580c;
+  --c-saffron-700: #c2410c;
+
+  --c-indigo-50:  #eef2ff;
+  --c-indigo-100: #e0e7ff;
+  --c-indigo-400: #818cf8;
+  --c-indigo-500: #6366f1;
+  --c-indigo-600: #4f46e5;
+  --c-indigo-700: #4338ca;
+  --c-indigo-900: #1e1b4b;
+
+  /* Neutrals */
+  --c-bg:        #f6f7fb;
+  --c-surface:   #ffffff;
+  --c-surface-2: #fbfbfd;
+  --c-border:    #e6e8ef;
+  --c-border-2:  #d6d9e4;
+  --c-ink:       #1b1f2a;
+  --c-ink-2:     #4b5160;
+  --c-ink-3:     #818897;
+  --c-ink-faint: #aab0bd;
+
+  /* Semantic */
+  --c-success:   #16a34a;
+  --c-success-bg:#dcfce7;
+  --c-warn:      #d97706;
+  --c-warn-bg:   #fef3c7;
+  --c-danger:    #dc2626;
+  --c-danger-bg: #fee2e2;
+  --c-info:      #2563eb;
+  --c-info-bg:   #dbeafe;
+  --c-purple:    #7c3aed;
+  --c-purple-bg: #ede9fe;
+
+  /* AI / agent accent */
+  --c-ai:        #7c3aed;
+  --c-ai-bg:     #f3effe;
+  --c-ai-border: #ddd0fb;
+
+  /* Typography */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", ui-monospace, "Consolas", monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13.5px;
+  --fs-md: 15px;
+  --fs-lg: 18px;
+  --fs-xl: 22px;
+  --fs-2xl: 28px;
+  --lh: 1.5;
+
+  /* Radius / spacing / shadow */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  --shadow-sm: 0 1px 2px rgba(20, 24, 40, .06), 0 1px 3px rgba(20, 24, 40, .05);
+  --shadow-md: 0 4px 12px rgba(20, 24, 40, .08), 0 2px 4px rgba(20, 24, 40, .04);
+  --shadow-lg: 0 12px 32px rgba(20, 24, 40, .14), 0 4px 8px rgba(20, 24, 40, .06);
+
+  --rail-w: 248px;
+  --topbar-h: 60px;
+
+  --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Stage colour mapping — used by journey board, badges, dashboards */
+:root {
+  --stage-new_contact:        #64748b;
+  --stage-contacted:          #0ea5e9;
+  --stage-attending:          #2563eb;
+  --stage-reading_group:      #7c3aed;
+  --stage-sadhana_active:     #c026d3;
+  --stage-seva_engaged:       #ea580c;
+  --stage-potential_preacher: #16a34a;
+  --stage-dormant:            #94a3b8;
+}
